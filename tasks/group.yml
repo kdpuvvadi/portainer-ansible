@@ -1,3 +1,4 @@
+---
 
 - name: Create group docker
   ansible.builtin.group:

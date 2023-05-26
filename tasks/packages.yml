@@ -1,22 +1,23 @@
 ---
-- name: apt cache update
-  apt:
+- name: Apt cache update
+  ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
   when:
     - ansible_facts.os_family == "Debian"
 
-- name: apt Upgrade
-  apt:
+- name: Apt Upgrade
+  ansible.builtin.apt:
     upgrade: true
   when:
     - ansible_facts.os_family == "Debian"
 
-- name: yum cache update & upgrade
-  yum:
+- name: Update dnf cache & upgrade
+  ansible.builtin.dnf:
     name: "*"
     state: latest
     update_cache: true
+    update_only: true
   when:
     - ansible_facts.os_family == "RedHat"
 
@@ -36,7 +37,7 @@
   when: ansible_facts.os_family == "Debian"
 
 - name: Install packages on redhatfamily
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - curl
       - python3

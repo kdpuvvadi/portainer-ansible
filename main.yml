@@ -28,5 +28,5 @@
         enabled: true
       when: docker_present.rc != 1
 
-    - name: install portainer
+    - name: Install portainer
       import_tasks: tasks/portainer.yml

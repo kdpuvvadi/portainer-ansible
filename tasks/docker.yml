@@ -1,5 +1,4 @@
 ---
-
 - name: Download Docker install script.
   ansible.builtin.get_url:
     url: https://get.docker.com/
@@ -24,12 +23,12 @@
   when: ansible_facts.os_family == "RedHat"
 
 - name: Update yum cache
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     update_cache: true
-  when: docker_present.rc == 1
+  when: ansible_facts.os_family == "RedHat"
 
 - name: Install docker on redhat
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - docker-ce
       - docker-ce-cli
