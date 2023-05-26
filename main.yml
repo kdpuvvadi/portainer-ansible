@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Config
+      include_vars: vars.yml
+
+    - name: Install packages/prerequisites
+      import_tasks: tasks/packages.yml
+
+    - name: If Docker is already installed?.
+      ansible.builtin.command: which docker
+      failed_when: false
+      changed_when: false
+      check_mode: false
+      register: docker_present
+
+  tasks:
+    - name: Setup Docker.
+      import_tasks: tasks/docker.yml
+      when: docker_present.rc == 1
+
+    - name: Start docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+      when: docker_present.rc != 1
+
+    - name: install portainer
+      import_tasks: tasks/portainer.yml
